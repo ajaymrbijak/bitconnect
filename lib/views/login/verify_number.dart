@@ -1,16 +1,15 @@
 import 'package:bitchat/constants/constants.dart';
-import 'package:bitchat/screens/login/api_otp.dart';
-import 'package:bitchat/screens/login/user_credentials.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
+import '../../api/apis.dart';
+import '../home/home_config_dashboard.dart';
 
 enum Status { waiting, error }
 
 class VerifyNumber extends StatefulWidget {
   const VerifyNumber({super.key, required this.number});
   final String number;
-  static String verify = '';
 
   @override
   State<VerifyNumber> createState() => _VerifyNumberState();
@@ -19,7 +18,6 @@ class VerifyNumber extends StatefulWidget {
 class _VerifyNumberState extends State<VerifyNumber> {
   var status = Status.waiting;
   TextEditingController textEditingController = TextEditingController();
-  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -105,13 +103,11 @@ class _VerifyNumberState extends State<VerifyNumber> {
               height: 50,
             ),
             Pinput(
-              length: 6,
-              onChanged: (value) {
-                code = value;
-              },
-              showCursor: true,
-              onCompleted: (pin) => print(pin),
-            ),
+                length: 6,
+                showCursor: true,
+                onCompleted: (pin) {
+                  code = pin;
+                }),
             const SizedBox(
               height: 30,
             ),
@@ -125,15 +121,34 @@ class _VerifyNumberState extends State<VerifyNumber> {
                           borderRadius: BorderRadius.circular(10))),
                   onPressed: () async {
                     try {
-                      valiOtp(mobilenumber: widget.number, otp: code);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => UserData()));
-                      // PhoneAuthCredential credential =
-                      //     PhoneAuthProvider.credential(
-                      //         verificationId: VerifyNumber.verify,
-                      //         smsCode: code);
-                      // await auth.signInWithCredential(credential);
-
+                      print("Otp in line 132 is $code");
+                      Map<String, dynamic> msg =
+                          await valiOtp(mobilenumber: widget.number, otp: code);
+                      print(msg['user_id']);
+                      print(msg['auth_token']);
+                      if (msg["response_code"] == 80) {
+                        print("Correct Otp Entered ");
+                        Get.to(const HomeConfigDashboard());
+                      } else {
+                        print("Wrong Otp entered");
+                        String title = "Invalid OTP!!";
+                        String message = "Please Enter Correct Otp";
+                        Get.snackbar(title, message,
+                            titleText: Text(
+                              title,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                            messageText: Text(
+                              message,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            colorText: Colors.white,
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: Colors.red.shade400);
+                      }
                     } catch (e) {
                       print("Wrong Otp : $e");
                     }
@@ -159,7 +174,7 @@ class _VerifyNumberState extends State<VerifyNumber> {
                 ),
                 TextButton(
                     onPressed: () async {
-                      // verifyMobileNumber();
+                      otpGet(mobilenumber: widget.number);
                     },
                     child: Text(
                       "RESEND OTP",

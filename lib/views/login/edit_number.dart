@@ -1,8 +1,8 @@
-import 'package:bitchat/screens/login/api_otp.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../api/apis.dart';
 import '../../constants/constants.dart';
-import 'coutrypicker.dart';
+import 'components/coutrypicker.dart';
 import 'verify_number.dart';
 
 class EditNumber extends StatefulWidget {
@@ -26,11 +26,6 @@ class _EditNumberState extends State<EditNumber> {
     print(controller.text);
     return Scaffold(
         resizeToAvoidBottomInset: false,
-
-        // navigationBar: const CupertinoNavigationBar(
-        //   middle: Text("Edit Number"),
-        //   previousPageTitle: "Back",
-        // ),
         body: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -74,34 +69,12 @@ class _EditNumberState extends State<EditNumber> {
                     borderRadius: BorderRadius.circular(30)),
                 child: OutlinedButton(
                   onPressed: () async {
-                    otpGet(mobilenumber: controller.text);
-
-                    // try {
-                    //   print(countryCode.text + controller.text);
-                    //   await FirebaseAuth.instance.verifyPhoneNumber(
-                    //     phoneNumber: countryCode.text + controller.text,
-                    //     verificationCompleted:
-                    //         (PhoneAuthCredential credential) {
-                    //       print(credential);
-                    //     },
-                    //     verificationFailed: (FirebaseAuthException e) {
-                    //       print(e);
-                    //     },
-                    //     codeSent: (String verificationId, int? resendToken) {
-                    //       VerifyNumber.verify = verificationId;
-                    //       print(VerifyNumber.verify);
-                    //       Navigator.push(
-                    //           context,
-                    //           MaterialPageRoute(
-                    //               builder: (context) => VerifyNumber(
-                    //                     number: controller.text,
-                    //                   )));
-                    //     },
-                    //     codeAutoRetrievalTimeout: (String verificationId) {},
-                    //   );
-                    // } catch (e) {
-                    //   print(e);
-                    // }
+                    await otpGet(mobilenumber: controller.text)
+                        .then((value) => {
+                              Get.to(VerifyNumber(
+                                number: controller.text,
+                              ))
+                            });
                   },
                   child: const Text(
                     'Request code',

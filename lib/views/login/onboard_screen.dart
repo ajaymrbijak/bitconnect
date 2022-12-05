@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../components/blur_image_scaffold.dart';
-import '../../components/lets_start.dart';
-import '../../components/logo.dart';
-import '../../components/terms_and_conditions.dart';
+import 'components/blur_image_scaffold.dart';
+import 'components/lets_start.dart';
+import 'components/logo.dart';
+import 'components/terms_and_conditions.dart';
 
-class Hello extends StatelessWidget {
-  const Hello({super.key});
+class OnBoardHelloScreen extends StatelessWidget {
+  const OnBoardHelloScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class Hello extends StatelessWidget {
         TermsAndConditions(
           onPressed: () {},
         ),
-        LetsStart(),
+        const LetsStart(),
       ],
     );
   }

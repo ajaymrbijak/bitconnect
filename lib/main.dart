@@ -1,16 +1,12 @@
-import 'package:bitchat/screens/login/hello.dart';
-
-import 'package:firebase_core/firebase_core.dart';
-
+import 'package:bitchat/views/home/home_config_dashboard.dart';
+import 'package:bitchat/views/home/respionsive_rates_check.dart';
+import 'package:bitchat/views/login/onboard_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'views/home/responsive/responisve.dart';
 
 const bool USE_EMULATOR = true;
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  // if (USE_EMULATOR) {
-  //   _connectFireBaseEmulator();
-  // }
   runApp(const MyApp());
 }
 
@@ -18,16 +14,13 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        home: const Hello(),
-        routes: const {
-          // 'phone': (context) => MyPhone(),
-          // 'verify': (context) => MyVerify()
-        },
+        home: const OnBoardHelloScreen(),
+        routes: const {},
         theme: ThemeData(
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            brightness: Brightness.light,
-            primaryColor: const Color(0xFF08C187)));
+            // visualDensity: VisualDensity.adaptivePlatformDensity,
+            // brightness: Brightness.light,
+            primarySwatch: Colors.deepPurple));
   }
 }

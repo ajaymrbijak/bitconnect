@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../constants/constants.dart';
-import '../screens/login/edit_number.dart';
+import 'package:get/get.dart';
+import '../../../constants/constants.dart';
+import '../edit_number.dart';
 
 class LetsStart extends StatefulWidget {
   const LetsStart({Key? key}) : super(key: key);
@@ -16,9 +17,9 @@ class _LetsStartState extends State<LetsStart> {
   Widget build(BuildContext context) {
     return TextButton(
         onPressed: (() {
-          Navigator.push(context,
-              MaterialPageRoute(builder: ((context) => const EditNumber())));
+          Get.to(const EditNumber());
         }),
-        child: Text('Let\'s Start', style: textdeco));
+        child: Text('Let\'s Start -->',
+            style: textdeco.copyWith(color: Colors.white)));
   }
 }
